@@ -156,6 +156,10 @@
     .val-step-value { font-size:14px; font-weight:600; color:var(--near-black); margin-bottom:2px; }
     .val-step-desc { font-size:11px; color:var(--sand5); line-height:1.4; }
 
+    /* ── JSON toggle ── */
+    .json-toggle-btn { width:100%; background:var(--sand2); border:1px solid var(--sand3); border-radius:var(--r); padding:9px 14px; font-size:12px; font-weight:600; color:var(--sand5); cursor:pointer; text-align:left; margin-bottom:8px; transition:background .15s; }
+    .json-toggle-btn:hover { background:var(--sand3); color:var(--near-black); }
+
     /* ── Response block ── */
     .resp-block { background:var(--white); border:1px solid var(--sand2); border-radius:var(--r); overflow:hidden; margin-bottom:10px; }
     .resp-title { padding:9px 14px; background:var(--sand2); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--sand5); border-bottom:1px solid var(--sand3); }
@@ -442,7 +446,7 @@
         <input type="file" id="file-input" accept="image/*" onchange="handleFile(event)">
         <div id="upload-placeholder">
           <div style="font-size:32px;margin-bottom:6px">🤳</div>
-          <div style="font-size:13px;font-weight:600;margin-bottom:3px">Click to select</div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:3px">Click to upload a photo</div>
           <div style="font-size:11px;color:var(--sand4)">JPG or PNG · Max 10 MB</div>
         </div>
         <div id="upload-preview" style="display:none;flex-direction:column;align-items:center;">
@@ -451,6 +455,12 @@
           <div style="font-size:11px;color:var(--sand5)" id="file-name"></div>
         </div>
       </div>
+      <div style="display:flex;align-items:center;gap:10px;margin:-6px 0 14px">
+        <div style="flex:1;height:1px;background:var(--sand2)"></div>
+        <span style="font-size:11px;color:var(--sand4)">or</span>
+        <div style="flex:1;height:1px;background:var(--sand2)"></div>
+      </div>
+      <button class="btn" onclick="useDemoSelfie()" style="background:var(--sand2);color:var(--near-black);font-size:13px;margin-bottom:14px;border:1px solid var(--sand3)">🤳 Use demo selfie →</button>
 
       <div class="section-label">Identifier</div>
       <div class="form-group">
@@ -501,37 +511,49 @@
         <div class="val-hero-sub">Trust · Risk Analysis</div>
       </div>
 
-      <div class="card-t sky" style="margin-bottom:12px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--sky-dark);margin-bottom:6px">What does INCONCLUSIVE mean?</div>
-        <div style="font-size:13px;color:var(--near-black);line-height:1.55;margin-bottom:8px">There is insufficient information available to determine the risk of this transaction.</div>
-        <div style="font-size:12px;color:var(--sand5);line-height:1.5">Trust evaluates the risk behavior of that face in the Unico network. Since this is a <strong style="color:var(--near-black)">new user</strong>, there is no behavioral history recorded in the network yet.</div>
+      <div class="val-steps">
+        <div class="val-step warn">
+          <div class="val-step-icon">⚠️</div>
+          <div class="val-step-body">
+            <div class="val-step-label">Trust · Risk analysis</div>
+            <div class="val-step-value">Inconclusive</div>
+            <div class="val-step-desc">Insufficient history to determine risk. New user in the network.</div>
+          </div>
+        </div>
       </div>
 
-      <div class="card-t sand" style="margin-bottom:4px">
+      <div class="card-t sky" style="margin-bottom:10px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--sky-dark);margin-bottom:4px">What does INCONCLUSIVE mean?</div>
+        <div style="font-size:12px;color:var(--near-black);line-height:1.5">Trust found no behavioral history for this face in the Unico network. Since this is a <strong>new user</strong>, there is not enough data to classify risk yet.</div>
+      </div>
+
+      <div class="card-t sand" style="margin-bottom:12px">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--sand5);margin-bottom:4px">Recommended action</div>
         <div style="font-size:13px;color:var(--near-black);font-weight:500">Back Office Review</div>
       </div>
 
-      <div class="section-label">Process information</div>
-      <div class="resp-block">
-        <div class="resp-row"><span class="rk">processId</span><span class="rv muted">a1b2c3d4-e5f6-7890</span></div>
-        <div class="resp-row"><span class="rk">state</span><span class="rv green">"FINISHED"</span></div>
-        <div class="resp-row"><span class="rk">result</span><span class="rv green">"OK"</span></div>
-        <div class="resp-row"><span class="rk">createdAt</span><span class="rv muted" id="inc-created"></span></div>
-        <div class="resp-row"><span class="rk">finishedAt</span><span class="rv muted" id="inc-finished"></span></div>
-        <div class="resp-row"><span class="rk">capacities</span><span class="rv sky">"TRUST"</span></div>
-      </div>
+      <button class="json-toggle-btn" id="inc-json-btn" onclick="toggleJson('inc-json')">{ } View JSON response ↓</button>
+      <div id="inc-json" style="display:none">
+        <div class="section-label">Process information</div>
+        <div class="resp-block">
+          <div class="resp-row"><span class="rk">processId</span><span class="rv muted" id="inc-pid"></span></div>
+          <div class="resp-row"><span class="rk">state</span><span class="rv green">"FINISHED"</span></div>
+          <div class="resp-row"><span class="rk">result</span><span class="rv green">"OK"</span></div>
+          <div class="resp-row"><span class="rk">createdAt</span><span class="rv muted" id="inc-created"></span></div>
+          <div class="resp-row"><span class="rk">finishedAt</span><span class="rv muted" id="inc-finished"></span></div>
+          <div class="resp-row"><span class="rk">capacities</span><span class="rv sky">"TRUST"</span></div>
+        </div>
 
-      <div class="section-label">Person information</div>
-      <div class="resp-block">
-        <div class="resp-row"><span class="rk">documentType</span><span class="rv sky" id="inc-dtype"></span></div>
-        <div class="resp-row"><span class="rk">documentValue</span><span class="rv muted" id="inc-dval"></span></div>
-      </div>
+        <div class="section-label">Person information</div>
+        <div class="resp-block">
+          <div class="resp-row"><span class="rk">documentType</span><span class="rv sky" id="inc-dtype"></span></div>
+          <div class="resp-row"><span class="rk">documentValue</span><span class="rv muted" id="inc-dval"></span></div>
+        </div>
 
-      <div class="section-label">Trust results</div>
-      <div class="resp-block">
-        <div class="resp-row"><span class="rk">trustResult</span><span class="rv sun">"INCONCLUSIVE"</span></div>
-        <div class="resp-row"><span class="rk">livenessResult</span><span class="rv green">"LIVE"</span></div>
+        <div class="section-label">Trust results</div>
+        <div class="resp-block">
+          <div class="resp-row"><span class="rk">trustResult</span><span class="rv sun">"INCONCLUSIVE"</span></div>
+        </div>
       </div>
 
       <div class="card-t sun" style="margin-top:4px;margin-bottom:8px">
@@ -590,42 +612,54 @@
         <div class="val-hero-sub">Trust · Risk signal identified</div>
       </div>
 
-      <div class="card-t coral" style="margin-bottom:12px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--coral-dark);margin-bottom:6px">What happened?</div>
-        <div style="font-size:13px;color:var(--near-black);line-height:1.55;margin-bottom:8px">The same face was submitted with a different identifier. Trust identified a multiple accounts risk and rejected the transaction.</div>
-        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
+      <div class="val-steps">
+        <div class="val-step fail">
+          <div class="val-step-icon">🔴</div>
+          <div class="val-step-body">
+            <div class="val-step-label">Trust · Risk analysis</div>
+            <div class="val-step-value">Reproved</div>
+            <div class="val-step-desc">Same face detected with a different identifier. Multiple accounts risk identified.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-t coral" style="margin-bottom:10px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--coral-dark);margin-bottom:4px">Risk signals detected</div>
+        <div style="display:flex;flex-direction:column;gap:5px">
           <div style="font-size:12px;font-weight:600;color:var(--coral-dark);font-family:monospace">⚠ MULTIPLE_ACCOUNTS_DETECTED</div>
           <div style="font-size:12px;font-weight:600;color:var(--coral-dark);font-family:monospace">⚠ FACE_REUSE_SUSPECTED</div>
         </div>
       </div>
 
-      <div class="card-t sand" style="margin-bottom:4px">
+      <div class="card-t sand" style="margin-bottom:12px">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--sand5);margin-bottom:4px">Recommended action</div>
         <div style="font-size:13px;color:var(--near-black);font-weight:500">Automatic block · Do not allow the transaction</div>
       </div>
 
-      <div class="section-label">Process information</div>
-      <div class="resp-block">
-        <div class="resp-row"><span class="rk">processId</span><span class="rv muted" id="risk-pid"></span></div>
-        <div class="resp-row"><span class="rk">state</span><span class="rv green">"FINISHED"</span></div>
-        <div class="resp-row"><span class="rk">result</span><span class="rv coral">"NOT_APPROVED"</span></div>
-        <div class="resp-row"><span class="rk">createdAt</span><span class="rv muted" id="risk-created"></span></div>
-        <div class="resp-row"><span class="rk">finishedAt</span><span class="rv muted" id="risk-finished"></span></div>
-        <div class="resp-row"><span class="rk">capacities</span><span class="rv sky">"TRUST"</span></div>
-      </div>
+      <button class="json-toggle-btn" id="risk-json-btn" onclick="toggleJson('risk-json')">{ } View JSON response ↓</button>
+      <div id="risk-json" style="display:none">
+        <div class="section-label">Process information</div>
+        <div class="resp-block">
+          <div class="resp-row"><span class="rk">processId</span><span class="rv muted" id="risk-pid"></span></div>
+          <div class="resp-row"><span class="rk">state</span><span class="rv green">"FINISHED"</span></div>
+          <div class="resp-row"><span class="rk">result</span><span class="rv coral">"NOT_APPROVED"</span></div>
+          <div class="resp-row"><span class="rk">createdAt</span><span class="rv muted" id="risk-created"></span></div>
+          <div class="resp-row"><span class="rk">finishedAt</span><span class="rv muted" id="risk-finished"></span></div>
+          <div class="resp-row"><span class="rk">capacities</span><span class="rv sky">"TRUST"</span></div>
+        </div>
 
-      <div class="section-label">Person information</div>
-      <div class="resp-block">
-        <div class="resp-row"><span class="rk">documentType</span><span class="rv sky" id="risk-dtype"></span></div>
-        <div class="resp-row"><span class="rk">documentValue (current)</span><span class="rv coral" id="risk-dval-new" style="font-size:10px"></span></div>
-        <div class="resp-row"><span class="rk">documentValue (previous)</span><span class="rv sun" id="risk-dval-prev" style="font-size:10px"></span></div>
-      </div>
+        <div class="section-label">Person information</div>
+        <div class="resp-block">
+          <div class="resp-row"><span class="rk">documentType</span><span class="rv sky" id="risk-dtype"></span></div>
+          <div class="resp-row"><span class="rk">documentValue (current)</span><span class="rv coral" id="risk-dval-new" style="font-size:10px"></span></div>
+          <div class="resp-row"><span class="rk">documentValue (previous)</span><span class="rv sun" id="risk-dval-prev" style="font-size:10px"></span></div>
+        </div>
 
-      <div class="section-label">Trust results</div>
-      <div class="resp-block">
-        <div class="resp-row"><span class="rk">trustResult</span><span class="rv coral">"REPROVED"</span></div>
-        <div class="resp-row"><span class="rk">livenessResult</span><span class="rv green">"LIVE"</span></div>
-        <div class="resp-row"><span class="rk">faceReuseCount</span><span class="rv coral">2</span></div>
+        <div class="section-label">Trust results</div>
+        <div class="resp-block">
+          <div class="resp-row"><span class="rk">trustResult</span><span class="rv coral">"REPROVED"</span></div>
+          <div class="resp-row"><span class="rk">faceReuseCount</span><span class="rv coral">2</span></div>
+        </div>
       </div>
 
       <button class="btn btn-muted" onclick="goHome()">← Back to home</button>
@@ -928,6 +962,28 @@
     document.getElementById('bu-noauth-finished').textContent=isoNow();
   }
 
+  // ── Demo selfie ──
+  const DEMO_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e8f5e9'/%3E%3Ccircle cx='50' cy='38' r='20' fill='%234caf50'/%3E%3Cellipse cx='50' cy='85' rx='30' ry='22' fill='%234caf50'/%3E%3C/svg%3E";
+  function useDemoSelfie(){
+    uploadedFile = { name: 'demo_selfie.jpg' };
+    previewSrc = DEMO_AVATAR;
+    document.getElementById('preview-img').src = DEMO_AVATAR;
+    document.getElementById('upload-placeholder').style.display = 'none';
+    document.getElementById('upload-preview').style.display = 'flex';
+    document.getElementById('upload-zone').classList.add('has-file');
+    document.getElementById('file-name').textContent = 'demo_selfie.jpg';
+    checkReady();
+  }
+
+  // ── JSON toggle ──
+  function toggleJson(id){
+    const el = document.getElementById(id);
+    const btn = document.getElementById(id+'-btn');
+    const hidden = el.style.display === 'none';
+    el.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? '{ } Hide JSON response ↑' : '{ } View JSON response ↓';
+  }
+
   // ── Upload flow ──
   function triggerUpload(){ if(!uploadedFile) document.getElementById('file-input').click(); }
 
@@ -987,10 +1043,16 @@
   }
 
   function fillInconclusive(){
+    document.getElementById('inc-pid').textContent=uuid();
     document.getElementById('inc-created').textContent=isoNow(-26000);
     document.getElementById('inc-finished').textContent=isoNow();
     document.getElementById('inc-dtype').textContent=`"${savedDocType}"`;
     document.getElementById('inc-dval').textContent=`"${savedDocVal}"`;
+    // reset JSON toggle
+    const jel=document.getElementById('inc-json');
+    if(jel) jel.style.display='none';
+    const jbtn=document.getElementById('inc-json-btn');
+    if(jbtn) jbtn.textContent='{ } View JSON response ↓';
   }
 
   function prepNewId(){
@@ -1043,6 +1105,11 @@
     document.getElementById('risk-dtype').textContent=`"${window._riskType||savedDocType}"`;
     document.getElementById('risk-dval-new').textContent=`"${window._riskVal||'other-id'}"`;
     document.getElementById('risk-dval-prev').textContent=`"${savedDocVal}"`;
+    // reset JSON toggle
+    const jel=document.getElementById('risk-json');
+    if(jel) jel.style.display='none';
+    const jbtn=document.getElementById('risk-json-btn');
+    if(jbtn) jbtn.textContent='{ } View JSON response ↓';
   }
 
   function resetUpload(){
@@ -1053,6 +1120,15 @@
     document.getElementById('upload-preview').style.display='none';
     document.getElementById('upload-zone').classList.remove('has-file');
     savedDocType=''; savedDocVal='';
+    // reset JSON toggles
+    ['inc-json','risk-json'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.style.display='none';
+    });
+    ['inc-json-btn','risk-json-btn'].forEach(id=>{
+      const btn=document.getElementById(id);
+      if(btn) btn.textContent='{ } View JSON response ↓';
+    });
     checkReady();
   }
 
