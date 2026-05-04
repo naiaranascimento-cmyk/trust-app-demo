@@ -246,21 +246,14 @@
       <div class="flow-card" onclick="goTo('screen-bu-intro','By Unico')">
         <div class="flow-icon sky">🔗</div>
         <h3>By Unico Flow</h3>
-        <p>Unico manages the complete experience: biometric capture via iFrame, identity verification, and risk analysis.</p>
+        <p>Unico manages the complete experience: biometric capture via iFrame, liveness detection, and risk analysis.</p>
         <div class="flow-card-arrow">›</div>
       </div>
 
       <div class="flow-card" onclick="goTo('screen-upload-form','By Client')">
         <div class="flow-icon green">📤</div>
         <h3>By Client Flow</h3>
-        <p>The client sends the selfie and identifier via API. Trust performs risk analysis only — no SDK, no identity verification.</p>
-        <div class="flow-card-arrow">›</div>
-      </div>
-
-      <div class="flow-card" onclick="goTo('screen-token-intro','Revalidation')">
-        <div class="flow-icon" style="background:var(--lav-light)">🔄</div>
-        <h3>Revalidation · Token</h3>
-        <p>Verifies if the person present is the same one who completed the previous onboarding. Result in under 2 seconds.</p>
+        <p>The client sends the selfie and identifier via API. Trust performs risk analysis only — no SDK required.</p>
         <div class="flow-card-arrow">›</div>
       </div>
 
@@ -297,7 +290,7 @@
         </div>
         <div class="step-item">
           <div class="step-num">2</div>
-          <div class="step-text"><h4>Risk analysis · Trust</h4><p>Evaluates the risk behavior of that face in the Unico network. Result in under 2 seconds.</p></div>
+          <div class="step-text"><h4>Risk analysis · Trust</h4><p>Evaluates the risk behavior of that face in the Unico network. Result in 3 seconds.</p></div>
         </div>
       </div>
 
@@ -439,7 +432,7 @@
     <div class="screen" id="screen-upload-form">
       <div class="pill green" style="margin-top:18px">● By Client · Step 1 of 2</div>
       <div class="page-title">Send selfie via API</div>
-      <div class="page-lead">The client sends the image and unique identifier directly via API. Trust performs risk analysis and returns the result in up to 2 seconds — no SDK required.</div>
+      <div class="page-lead">The client sends the image and unique identifier directly via API. Trust performs risk analysis and returns the result in 3 seconds — no SDK required.</div>
 
       <div class="section-label">Photo (Selfie)</div>
       <div class="upload-zone" id="upload-zone" onclick="triggerUpload()">
@@ -503,27 +496,30 @@
       </div>
     </div>
 
-    <!-- ══ BY CLIENT — RESULT: INCONCLUSIVE ══ -->
+    <!-- ══ BY CLIENT — RESULT: UNDEFINED ══ -->
     <div class="screen" id="screen-upload-inconclusive">
       <div class="val-hero warn" style="background:var(--sun-light);border:1px solid var(--sun);margin-top:16px">
         <div class="val-hero-icon">⚠️</div>
-        <div class="val-hero-title" style="color:var(--sun-dark)">Inconclusive</div>
+        <div class="val-hero-title" style="color:var(--sun-dark)">Undefined</div>
         <div class="val-hero-sub">Trust · Risk Analysis</div>
       </div>
 
-      <div class="val-steps">
-        <div class="val-step warn">
-          <div class="val-step-icon">⚠️</div>
-          <div class="val-step-body">
-            <div class="val-step-label">Trust · Risk analysis</div>
-            <div class="val-step-value">Inconclusive</div>
-            <div class="val-step-desc">Insufficient history to determine risk. New user in the network.</div>
-          </div>
+      <div class="section-label">Analysis results</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <div style="flex:1;background:var(--sun-light);border:1px solid var(--sun);border-radius:var(--r);padding:12px;text-align:center">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--sun-dark);margin-bottom:6px">Risk Analysis</div>
+          <div style="font-size:15px;font-weight:700;color:var(--sun-dark)">Undefined</div>
+          <div style="font-size:10px;color:var(--sand5);margin-top:3px">trustResult</div>
+        </div>
+        <div style="flex:1;background:var(--green-light);border:1px solid var(--green);border-radius:var(--r);padding:12px;text-align:center">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--green-dark);margin-bottom:6px">Multiaccounting</div>
+          <div style="font-size:15px;font-weight:700;color:var(--green-dark)">Not Detected</div>
+          <div style="font-size:10px;color:var(--sand5);margin-top:3px">multiaccountingResult</div>
         </div>
       </div>
 
       <div class="card-t sky" style="margin-bottom:10px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--sky-dark);margin-bottom:4px">What does INCONCLUSIVE mean?</div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--sky-dark);margin-bottom:4px">What does UNDEFINED mean?</div>
         <div style="font-size:12px;color:var(--near-black);line-height:1.5">Trust found no behavioral history for this face in the Unico network. Since this is a <strong>new user</strong>, there is not enough data to classify risk yet.</div>
       </div>
 
@@ -543,16 +539,15 @@
           <div class="resp-row"><span class="rk">finishedAt</span><span class="rv muted" id="inc-finished"></span></div>
           <div class="resp-row"><span class="rk">capacities</span><span class="rv sky">"TRUST"</span></div>
         </div>
-
         <div class="section-label">Person information</div>
         <div class="resp-block">
           <div class="resp-row"><span class="rk">documentType</span><span class="rv sky" id="inc-dtype"></span></div>
           <div class="resp-row"><span class="rk">documentValue</span><span class="rv muted" id="inc-dval"></span></div>
         </div>
-
         <div class="section-label">Trust results</div>
         <div class="resp-block">
-          <div class="resp-row"><span class="rk">trustResult</span><span class="rv sun">"INCONCLUSIVE"</span></div>
+          <div class="resp-row"><span class="rk">trustResult</span><span class="rv sun">"UNDEFINED"</span></div>
+          <div class="resp-row"><span class="rk">multiaccountingResult</span><span class="rv green">"NOT_DETECTED"</span></div>
         </div>
       </div>
 
@@ -612,14 +607,17 @@
         <div class="val-hero-sub">Trust · Risk signal identified</div>
       </div>
 
-      <div class="val-steps">
-        <div class="val-step fail">
-          <div class="val-step-icon">🔴</div>
-          <div class="val-step-body">
-            <div class="val-step-label">Trust · Risk analysis</div>
-            <div class="val-step-value">Reproved</div>
-            <div class="val-step-desc">Same face detected with a different identifier. Multiple accounts risk identified.</div>
-          </div>
+      <div class="section-label">Analysis results</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <div style="flex:1;background:var(--coral-light);border:1px solid var(--coral);border-radius:var(--r);padding:12px;text-align:center">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--coral-dark);margin-bottom:6px">Risk Analysis</div>
+          <div style="font-size:15px;font-weight:700;color:var(--coral-dark)">Reproved</div>
+          <div style="font-size:10px;color:var(--sand5);margin-top:3px">trustResult</div>
+        </div>
+        <div style="flex:1;background:var(--coral-light);border:1px solid var(--coral);border-radius:var(--r);padding:12px;text-align:center">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--coral-dark);margin-bottom:6px">Multiaccounting</div>
+          <div style="font-size:15px;font-weight:700;color:var(--coral-dark)">Detected</div>
+          <div style="font-size:10px;color:var(--sand5);margin-top:3px">multiaccountingResult</div>
         </div>
       </div>
 
@@ -658,6 +656,7 @@
         <div class="section-label">Trust results</div>
         <div class="resp-block">
           <div class="resp-row"><span class="rk">trustResult</span><span class="rv coral">"REPROVED"</span></div>
+          <div class="resp-row"><span class="rk">multiaccountingResult</span><span class="rv coral">"DETECTED"</span></div>
           <div class="resp-row"><span class="rk">faceReuseCount</span><span class="rv coral">2</span></div>
         </div>
       </div>
@@ -665,8 +664,8 @@
       <button class="btn btn-muted" onclick="goHome()">← Back to home</button>
     </div>
 
-    <!-- ══ REVALIDATION — INTRO ══ -->
-    <div class="screen" id="screen-token-intro">
+    <!-- ══ REVALIDATION REMOVED ══ -->
+    <div class="screen" id="screen-token-intro" style="display:none!important">
       <div class="progress-outer" style="margin-top:20px"><div class="progress-inner" style="width:33%;background:var(--lav)"></div></div>
       <div class="pill lav">● Revalidation · Step 1 of 3</div>
       <div class="page-title">Biometric Revalidation</div>
@@ -701,7 +700,7 @@
     </div>
 
     <!-- ══ REVALIDATION — CAPTURE ══ -->
-    <div class="screen" id="screen-token-capture" style="padding:0;background:#6B6B6B;">
+    <div class="screen" id="screen-token-capture" style="display:none!important" style="padding:0;background:#6B6B6B;">
       <div class="capture-wrapper">
         <div id="tcap-loading" style="display:flex;flex-direction:column;align-items:center;gap:16px">
           <div style="width:40px;height:40px;border-radius:50%;border:3px solid rgba(255,255,255,.3);border-top-color:rgba(255,255,255,.8);animation:spin .9s linear infinite"></div>
@@ -732,7 +731,7 @@
     </div>
 
     <!-- ══ REVALIDATION — RESULT: MATCH ══ -->
-    <div class="screen" id="screen-token-match">
+    <div class="screen" id="screen-token-match" style="display:none!important">
       <div class="progress-outer" style="margin-top:16px"><div class="progress-inner" style="width:100%;background:var(--lav-dark)"></div></div>
       <div class="val-hero" style="background:var(--lav-light);border:1px solid var(--lav);margin-bottom:14px">
         <div class="val-hero-icon">✅</div>
@@ -783,7 +782,7 @@
     </div>
 
     <!-- ══ REVALIDATION — RESULT: NO MATCH ══ -->
-    <div class="screen" id="screen-token-nomatch">
+    <div class="screen" id="screen-token-nomatch" style="display:none!important">
       <div class="progress-outer" style="margin-top:16px"><div class="progress-inner" style="width:100%;background:var(--coral-dark)"></div></div>
       <div class="val-hero noauth" style="margin-bottom:14px">
         <div class="val-hero-icon">❌</div>
@@ -862,8 +861,6 @@
     'screen-upload-inconclusive':'Result',
     'screen-upload-newid':'New identifier',
     'screen-proc-risk':'','screen-upload-risk':'Result',
-    'screen-token-intro':'Revalidation','screen-token-capture':'Revalidation',
-    'screen-token-match':'Result','screen-token-nomatch':'Result',
   };
 
   // ── Navigation ──
@@ -885,9 +882,6 @@
     if(id==='screen-upload-inconclusive') fillInconclusive();
     if(id==='screen-upload-newid')      prepNewId();
     if(id==='screen-upload-risk')       fillRisk();
-    if(id==='screen-token-capture')     startTokenCapture();
-    if(id==='screen-token-match')       fillTokenMatch();
-    if(id==='screen-token-nomatch')     fillTokenNoMatch();
   }
 
   function goBack(){
