@@ -243,16 +243,16 @@
       <div class="page-lead">Try the capture and real-time risk analysis flows in a sandbox environment — no technical setup required.</div>
       <div class="section-label">Choose a flow</div>
 
-      <div class="flow-card" onclick="goTo('screen-bu-intro','By Unico')">
+      <div class="flow-card" onclick="goTo('screen-bu-intro','Nativo')">
         <div class="flow-icon sky">🔗</div>
-        <h3>By Unico Flow</h3>
+        <h3>Nativo Flow</h3>
         <p>Unico manages the complete experience: biometric capture via iFrame, liveness detection, and risk analysis.</p>
         <div class="flow-card-arrow">›</div>
       </div>
 
-      <div class="flow-card" onclick="goTo('screen-upload-form','By Client')">
+      <div class="flow-card" onclick="goTo('screen-upload-form','Web')">
         <div class="flow-icon green">📤</div>
-        <h3>By Client Flow</h3>
+        <h3>Web Flow</h3>
         <p>The client sends the selfie and identifier via API. Trust performs risk analysis only — no SDK required.</p>
         <div class="flow-card-arrow">›</div>
       </div>
@@ -270,7 +270,7 @@
     <!-- ══ BY UNICO — INTRO ══ -->
     <div class="screen" id="screen-bu-intro">
       <div class="progress-outer" style="margin-top:20px"><div class="progress-inner" style="width:50%"></div></div>
-      <div class="pill sky">● By Unico · Step 1 of 2</div>
+      <div class="pill sky">● Nativo · Step 1 of 2</div>
       <div class="page-title">Capture with Liveness</div>
       <div class="page-lead">Unico manages the complete biometric capture experience with real-time proof of life detection.</div>
 
@@ -299,6 +299,11 @@
       </div>
 
       <button class="btn btn-primary" onclick="goTo('screen-bu-capture','')">Start biometric capture →</button>
+      <div class="card-t sun" style="margin-top:10px">
+        <div style="font-size:13px;font-weight:600;color:var(--sun-dark);margin-bottom:4px">⚠️ Simulate risk scenario</div>
+        <div style="font-size:12px;color:var(--dark-brown);line-height:1.5">See what happens when Trust detects a risk signal and reproves the transaction.</div>
+      </div>
+      <button class="btn btn-sun" onclick="goTo('screen-bu-noauth','Result')">View reproved scenario →</button>
     </div>
 
     <!-- ══ BY UNICO — CAPTURE ══ -->
@@ -430,7 +435,7 @@
 
     <!-- ══ BY CLIENT — FORM ══ -->
     <div class="screen" id="screen-upload-form">
-      <div class="pill green" style="margin-top:18px">● By Client · Step 1 of 2</div>
+      <div class="pill green" style="margin-top:18px">● Web · Step 1 of 2</div>
       <div class="page-title">Send selfie via API</div>
       <div class="page-lead">The client sends the image and unique identifier directly via API. Trust performs risk analysis and returns the result in 3 seconds — no SDK required.</div>
 
@@ -855,9 +860,9 @@
   let savedDocType = '', savedDocVal = '';
 
   const TITLES = {
-    'screen-bu-intro':'By Unico','screen-bu-capture':'By Unico',
+    'screen-bu-intro':'Nativo','screen-bu-capture':'Nativo',
     'screen-bu-auth':'Result','screen-bu-noauth':'Result',
-    'screen-upload-form':'By Client','screen-proc-upload':'',
+    'screen-upload-form':'Web','screen-proc-upload':'',
     'screen-upload-inconclusive':'Result',
     'screen-upload-newid':'New identifier',
     'screen-proc-risk':'','screen-upload-risk':'Result',
@@ -917,7 +922,7 @@
   function isoNow(ms=0){ return `"${new Date(Date.now()+ms).toISOString().slice(0,23)}Z"`; }
   function uuid(){ return 'xxxxxxxx-xxxx-4xxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16);}); }
 
-  // ── By Unico capture ──
+  // ── Nativo capture ──
   function startCapture(){
     $show('cap-loading'); $hide('cap-card'); $hide('cap-verify'); $hide('cap-verifying');
     document.getElementById('cap-oval').className='liveness-oval';
